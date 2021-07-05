@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial gsm(2, 3); // RX, TX
-
+String SendCmd="AT+CIPSEND="; 
 // gsm -> GSM Module
 // Serial -> Arduino(reads onto Serial Monitor)
 
@@ -14,6 +14,9 @@ void setup() {
   // HTTPCheck(); // Throwing some buggy results
   exec("AT+CIPSTART = \"TCP\",\"battlesnake-sl-2021.herokuapp.com\",\"80\"");
   // exec("AT+CIPSTART = \"TCP\",\"matuluka.tmep.cz\",\"80\"");
+  String str="";
+  str=SendCmd+80;
+  sendToServer(str);
 }
 
 /*
@@ -37,7 +40,11 @@ void loop() {
     gsm.write(Serial.read());
   }
 }
-
+void sendToServer(String str)
+{
+  gsm.println(str);
+  delay(1000);
+}
 void initGSM() {
   connectGSM("AT","OK");
   connectGSM("ATE1","OK");

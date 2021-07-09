@@ -34,12 +34,14 @@
 -----
 GET
 -----
+AT+HTTPSSL=1
 AT+SAPBR=3,1,"APN","CMNET"
+AT+SAPBR=1,1
 AT+HTTPINIT
 AT+HTTPPARA="CID",1
-AT+HTTPPARA= "URL","battlesnake-sl-2021.herokuapp.com"
+AT+HTTPPARA= "URL","kidzafe.herokuapp.com/persons"
 AT+HTTPACTION=0
-AT+HTTPREAD=0,100
+AT+HTTPREAD=0,228
 AT+HTTPTERM
 
 POST
@@ -47,7 +49,9 @@ POST
 AT+SAPBR=3,1,"APN","CMNET"
 AT+HTTPINIT
 AT+HTTPPARA="CID",1
-AT+HTTPPARA= "URL","battlesnake-sl-2021.herokuapp.com"
-AT+HTTPDATA=4,5000
+AT+HTTPPARA= "URL","kidzafe.herokuapp.com"
+AT+HTTPDATA=36,10000
+{"name": "Karthik", "domain": "GSM"}
 AT+HTTPACTION=1
+AT+HTTPREAD=0,12
 AT+HTTPTERM

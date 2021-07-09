@@ -11,12 +11,16 @@ void setup() {
   gsm.begin(9600);
   initGSM();
   initGPRS();
+  exec("AT+CIPSTART = \"TCP\",\"kidzafe.herokuapp.com\",\"80\"");
+  connectGSM("AT+SAPBR=3,1,\"APN\",\"CMNET\"","OK");
+  exec("AT+SAPBR=0,1");
+  exec("AT+SAPBR=1,1");
   // HTTPCheck(); // Throwing some buggy results
-  exec("AT+CIPSTART = \"TCP\",\"battlesnake-sl-2021.herokuapp.com\",\"80\"");
+  // exec("AT+CIPSTART = \"TCP\",\"kidzafe.herokuapp.com\",\"80\"");
   // exec("AT+CIPSTART = \"TCP\",\"matuluka.tmep.cz\",\"80\"");
-  String str="";
-  str=SendCmd+80;
-  sendToServer(str);
+  // String str="";
+  // str=SendCmd+80;
+  // sendToServer(str);
 }
 
 /*
@@ -71,7 +75,7 @@ void HTTPCheck()
 void exec(String s) {
   Serial.println(s);
   gsm.println(s);
-  delay(1000);
+  delay(3000);
   if(gsm.available()>0) {
     Serial.write(gsm.read());
   }

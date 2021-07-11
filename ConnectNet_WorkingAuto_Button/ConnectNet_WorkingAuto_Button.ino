@@ -14,7 +14,9 @@ int state = 0;
 const int pin = 12;
 int led = 13;
 int po = 11;
+int sizeOfData;
 int buttonState = 0;
+
 void setup() {
 
   Serial.begin(9600);
@@ -32,7 +34,7 @@ void setup() {
   delay(1000);
   Serial.println(" ");
   Serial.println("Executing ...");
-     gsm.listen();
+  gsm.listen();
   initGSM();
   initGPRS();
   exec("AT+CIFSR");
@@ -59,15 +61,18 @@ void loop() {
   }
   Location = "https://www.google.com/maps/?q=" + String(gpslat, 6) + "," + String(gpslon, 6);
   sendData = "{\"name\": \"Karthik\", \"domain\": \"" + Location + "\"}";
+  sizeOfData = sendData.length();
   if (voltage > 4) {
     digitalWrite(led, HIGH);
     gsm.listen();
     Serial.println("HTTP POST ... ");
     postHTTP();
-    Serial.println("HTTP GET ... ");
-    getHTTP();
-    if (gsm.available() > 0)
+    /*
+      Serial.println("HTTP GET ... ");
+      getHTTP();
+      if (gsm.available() > 0)
       Serial.write(gsm.read());
+    */
   }
   else {
     digitalWrite(led, LOW);
@@ -96,17 +101,17 @@ void initHTTP() {
   connectGSM("AT+HTTPPARA=\"CID\",1", "OK");
   connectGSM("AT+HTTPPARA= \"URL\",\"kidzafe.herokuapp.com/persons\"", "OK");
 }
-
-void getHTTP() {
+/*
+  void getHTTP() {
   connectGSM("AT+HTTPACTION=0", "OK");
   delay(15000);
   exec("AT+HTTPREAD");
   if (gsm.available() > 0)
     Serial.write(gsm.read());
-}
-
+  }
+*/
 void postHTTP() {
-  connectGSM("AT+HTTPDATA=83,10000", "DOWNLOAD");
+  connectGSM("AT+HTTPDATA=" + String(sizeOfData) + ",10000", "DOWNLOAD");
   delay(3000);
 
   connectGSM(sendData, "OK");
